@@ -15,4 +15,14 @@ public interface MyFunction {
      */
     public int apply(int i);
     
+    /**
+     * Default-Methode
+     * 
+     * @param predicate
+     * @return
+     */
+    public default boolean conditionateInput(boolean predicate) {
+	
+    }
+    
 }
