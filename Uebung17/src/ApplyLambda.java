@@ -8,7 +8,8 @@ public class ApplyLambda {
 
     /**
      * Berechnet die Funktionswerte einer Funktion von allen natürlichen Zahlen
-     * zwischen zwei übergebenen Zahlen
+     * zwischen zwei übergebenen Zahlen 
+     * und gibt sie auf der Standardausgabe aus.
      * 
      * @param a		die erste Zahl
      * @param b		die zweite Zahl
