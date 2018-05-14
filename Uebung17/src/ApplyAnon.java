@@ -9,7 +9,8 @@ public class ApplyAnon {
 
     /**
      * Berechnet die Funktionswerte einer Funktion von allen natürlichen Zahlen
-     * zwischen zwei übergebenen Zahlen
+     * zwischen zwei übergebenen Zahlen 
+     * und gibt sie auf der Standardausgabe aus.
      * 
      * @param a
      *            die erste Zahl
