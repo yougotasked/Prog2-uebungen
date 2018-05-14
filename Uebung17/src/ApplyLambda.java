@@ -8,12 +8,14 @@ public class ApplyLambda {
 
     /**
      * Berechnet die Funktionswerte einer Funktion von allen natürlichen Zahlen
-     * zwischen zwei übergebenen Zahlen 
-     * und gibt sie auf der Standardausgabe aus.
+     * zwischen zwei übergebenen Zahlen und gibt sie auf der Standardausgabe aus.
      * 
-     * @param a		die erste Zahl
-     * @param b		die zweite Zahl
-     * @param f		die Funktion
+     * @param a
+     *            die erste Zahl
+     * @param b
+     *            die zweite Zahl
+     * @param f
+     *            die Funktion
      */
     public void applyAndPrint(int a, int b, MyFunction f) {
 	if (a <= 0 || b <= 0)
@@ -53,5 +55,3 @@ public class ApplyLambda {
 
     }
 }
-
-
