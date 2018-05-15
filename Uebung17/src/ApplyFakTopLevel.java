@@ -3,8 +3,7 @@
  * Klasse: ApplyFak, implementiert das Interface MyFunction
  * 
  * 
- * 
- * @author Nico
+ * @author Nico Spanier, Matthias Tritt
  *
  */
 public class ApplyFakTopLevel implements MyFunction {
