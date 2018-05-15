@@ -1,3 +1,5 @@
+import java.util.function.IntPredicate;
+
 /**
  * Klasse: ApplyLambda
  * 
@@ -5,6 +7,8 @@
  *
  */
 public class ApplyLambda {
+
+    private IntPredicate even = (int i) -> i % 2 == 0;
 
     /**
      * Berechnet die Funktionswerte einer Funktion von allen natürlichen Zahlen
