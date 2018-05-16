@@ -1,3 +1,4 @@
+import java.util.function.IntPredicate;
 
 /**
  * Klasse: ApplyAnon
@@ -6,6 +7,22 @@
  *
  */
 public class ApplyAnon {
+    
+
+    private IntPredicate odd = new IntPredicate() {
+
+	@Override
+	public boolean test(int i) {
+	    return i % 2 != 0;
+	}
+    };
+    
+    private MyFunctionExtended fak = (int i) -> MyMathFunctions.fak(i);
+
+    
+    public void printAllOddFakNumbers(int a, int b) {
+	applyAndPrint(a, b, fak.conditionateOutput(odd));
+    }
 
     /**
      * Berechnet die Funktionswerte einer Funktion von allen natürlichen Zahlen

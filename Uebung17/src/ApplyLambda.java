@@ -9,6 +9,15 @@ import java.util.function.IntPredicate;
 public class ApplyLambda {
 
     private IntPredicate even = (int i) -> i % 2 == 0;
+    
+    private MyFunctionExtended square = (int i) -> i*i;
+    
+    
+    public void printAllSquaresOfEvenNumbers(int a, int b) {
+	applyAndPrint(a, b, square.conditionateInput(even));
+    }
+    
+
 
     /**
      * Berechnet die Funktionswerte einer Funktion von allen natürlichen Zahlen
@@ -57,5 +66,9 @@ public class ApplyLambda {
     public void functionIV(int a, int b) {
 	applyAndPrint(a, b, (int i) -> MyMathFunctions.fib(i));
 
+    }
+    
+    public void printGeradeQuadratzahlen(int a, int b) {
+	
     }
 }
