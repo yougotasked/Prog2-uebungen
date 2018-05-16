@@ -37,7 +37,7 @@ public class ApplyFakTopLevel implements MyFunction {
 	@Override
 	public int apply(int i) {
 	    // TODO Auto-generated method stub
-	    return 0;
+	    return MyMathFunctions.fak(i);
 	}
 
     }
