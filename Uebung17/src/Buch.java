@@ -11,6 +11,7 @@ import java.io.*;
 
 public class Buch extends Artikel
 {
+   
     //------------------Konstanten----------------------------------
 
     private static final String STD_AUTOR = "kein Autor";
