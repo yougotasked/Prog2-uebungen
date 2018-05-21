@@ -6,8 +6,8 @@ import java.util.*;
 /**
  * Die Klasse: Lager.java Realisiert eine allgemeine Lager-Klasse fuer Artikel.
  *
- * @version 2.61 Beta 04.01.2018
- * @author Wolfgang Pauly
+ * @version 2.61 Beta 04.01.2018, erweitert 21.05.18
+ * @author Wolfgang Pauly, erweitert von Nico Spanier, Matthias Tritt
  *
  */
 
@@ -94,6 +94,128 @@ public class Lager {
 	for (int lauf = 0; lauf < dimension; lauf++) {
 	    lager[lauf] = null;
 	}
+    }
+
+    // -----------------filter-Methode------------------------------------
+
+    /**
+     * Erstellt eine gefilterte Liste aller Artikel, die ein bestimmtes Kriterium
+     * erfüllen. Das Kriterium wird über ein Predicate übergeben.
+     * 
+     * @param pred
+     *            das Kriterium für die Liste
+     * @return die gefilterte Liste an Artikeln
+     */
+    public ArrayList<Artikel> filter(Predicate<Artikel> pred) {
+	ArrayList<Artikel> filteredList = new ArrayList<Artikel>();
+	for (int i = 0; i <= letzterBesetzterIndex; i++) {
+	    if (pred.test(lager[i]))
+		filteredList.add(lager[i]);
+	}
+	return filteredList;
+    }
+
+    // -----------getSorted-Methode und Anwendungen davon--------------------
+
+    /**
+     * Erstellt eine sortierte Liste der gespeicherten Artikel. Nach was sortiert
+     * werden soll, wird per BiPredicate übergeben.
+     * 
+     * @param bp
+     *            das BiPredicate, nach dem sortiert werden soll
+     * @return die sortierte Liste
+     */
+    public ArrayList<Artikel> getSorted(BiPredicate<Artikel, Artikel> bp) {
+	Artikel[] sorted = lager.clone();
+	for (int i = 0; i <= letzterBesetzterIndex; i++) {
+	    for (int j = 0; j <= letzterBesetzterIndex; j++)
+		if (bp.test(sorted[i], sorted[j])) {
+		    Artikel tmp = sorted[i];
+		    sorted[i] = sorted[j];
+		    sorted[j] = tmp;
+		}
+	}
+	return new ArrayList<Artikel>(Arrays.asList(sorted));
+    }
+
+    /**
+     * Erstellt eine der Bezeichnung sortierte Liste der Artikel
+     * 
+     * @return arrayList die sortierte Liste
+     */
+    public ArrayList<Artikel> sortByAlphabet() {
+	return getSorted((Artikel a, Artikel b) -> {
+	    return a.getBezeichnung().compareTo(b.getBezeichnung()) < 0;
+	});
+    }
+
+    /**
+     * Erstellt eine aufsteigend nach Bestand sortierte Liste der Artikel
+     * 
+     * @return arrayList die sortierte Liste
+     */
+    public ArrayList<Artikel> sortByBestand() {
+	return getSorted((Artikel a, Artikel b) -> {
+	    return a.getBestand() < b.getBestand();
+	});
+    }
+
+    /**
+     * Erstellt eine aufsteigend nach Preis sortierte Liste der Artikel
+     * 
+     * @return arrayList die sortierte Liste
+     */
+    public ArrayList<Artikel> sortByPreis() {
+	return getSorted((Artikel a, Artikel b) -> {
+	    return a.getPreis() < b.getPreis();
+	});
+    }
+
+    // -----------applyToArticles-Methode und Anwendungen davon-----------------
+
+    /**
+     * Wendet eine festgelegte Operation auf jeden Artikel an. Die Aktion wird per
+     * UnaryOperator übergeben.
+     * 
+     * @param op
+     *            die Operation, die durchgeführt wird
+     */
+    public void applyToArticles(UnaryOperator<Artikel> op) {
+	for (int i = 0; i <= letzterBesetzterIndex; i++) {
+	    lager[i] = op.apply(lager[i]);
+	}
+    }
+
+    /**
+     * Reduziert alle Artikel um 10%.
+     */
+    public void reduziereAlleUm10Prozent() {
+	applyToArticles((Artikel a) -> {
+	    a.aenderePreis(-10.0);
+	    return a;
+	});
+    }
+
+    /**
+     * Hängt an jede Artikelbezeichnung das Suffix "- Sonderangebot" an.
+     */
+    public void addSonderangebotSuffix() {
+	applyToArticles((Artikel a) -> {
+	    a.setBezeichnung(a.getBezeichnung() + " - Sonderangebot!");
+	    return a;
+	});
+    }
+
+    /**
+     * Reduziert jeden Artikel um 10% und hängt an jede Artikelbezeichnung das
+     * Suffix " - Sonderangebot" an.
+     */
+    public void reduzierenUndSuffix() {
+	applyToArticles((Artikel a) -> {
+	    reduziereAlleUm10Prozent();
+	    addSonderangebotSuffix();
+	    return a;
+	});
     }
 
     // ------------------ set-/get-lagerOrt---------------------------------
@@ -247,128 +369,6 @@ public class Lager {
 	for (int lauf = 0; lauf <= letzterBesetzterIndex; lauf++) {
 	    lager[lauf].aenderePreis(prozent);
 	}
-    }
-
-    // -----------------filter-Methode------------------------------------
-
-    /**
-     * Erstellt eine gefilterte Liste aller Artikel, die ein bestimmtes Kriterium
-     * erfüllen. Das Kriterium wird über ein Predicate übergeben.
-     * 
-     * @param pred
-     *            das Kriterium für die Liste
-     * @return die gefilterte Liste an Artikeln
-     */
-    public ArrayList<Artikel> filter(Predicate<Artikel> pred) {
-	ArrayList<Artikel> filteredList = new ArrayList<Artikel>();
-	for (int i = 0; i <= letzterBesetzterIndex; i++) {
-	    if (pred.test(lager[i]))
-		filteredList.add(lager[i]);
-	}
-	return filteredList;
-    }
-
-    // -----------getSorted-Methode und Anwendungen davon--------------------
-
-    /**
-     * Erstellt eine sortierte Liste der gespeicherten Artikel. Nach was sortiert
-     * werden soll, wird per BiPredicate übergeben.
-     * 
-     * @param bp
-     *            das BiPredicate, nach dem sortiert werden soll
-     * @return die sortierte Liste
-     */
-    public ArrayList<Artikel> getSorted(BiPredicate<Artikel, Artikel> bp) {
-	Artikel[] sorted = lager.clone();
-	for (int i = 0; i <= letzterBesetzterIndex; i++) {
-	    for (int j = 0; j <= letzterBesetzterIndex; j++)
-		if (bp.test(sorted[i], sorted[j])) {
-		    Artikel tmp = sorted[i];
-		    sorted[i] = sorted[j];
-		    sorted[j] = tmp;
-		}
-	}
-	return new ArrayList<Artikel>(Arrays.asList(sorted));
-    }
-
-    /**
-     * Erstellt eine der Bezeichnung sortierte Liste der Artikel
-     * 
-     * @return arrayList die sortierte Liste
-     */
-    public ArrayList<Artikel> sortByAlphabet() {
-	return getSorted((Artikel a, Artikel b) -> {
-	    return a.getBezeichnung().compareTo(b.getBezeichnung()) < 0;
-	});
-    }
-
-    /**
-     * Erstellt eine aufsteigend nach Bestand sortierte Liste der Artikel
-     * 
-     * @return arrayList die sortierte Liste
-     */
-    public ArrayList<Artikel> sortByBestand() {
-	return getSorted((Artikel a, Artikel b) -> {
-	    return a.getBestand() < b.getBestand();
-	});
-    }
-
-    /**
-     * Erstellt eine aufsteigend nach Preis sortierte Liste der Artikel
-     * 
-     * @return arrayList die sortierte Liste
-     */
-    public ArrayList<Artikel> sortByPreis() {
-	return getSorted((Artikel a, Artikel b) -> {
-	    return a.getPreis() < b.getPreis();
-	});
-    }
-
-    // -----------applyToArticles-Methode und Anwendungen davon-----------------
-
-    /**
-     * Wendet eine festgelegte Operation auf jeden Artikel an. Die Aktion wird per
-     * UnaryOperator übergeben.
-     * 
-     * @param op
-     *            die Operation, die durchgeführt wird
-     */
-    public void applyToArticles(UnaryOperator<Artikel> op) {
-	for (int i = 0; i <= letzterBesetzterIndex; i++) {
-	    lager[i] = op.apply(lager[i]);
-	}
-    }
-
-    /**
-     * Reduziert alle Artikel um 10%.
-     */
-    public void reduziereAlleUm10Prozent() {
-	applyToArticles((Artikel a) -> {
-	    a.aenderePreis(-10.0);
-	    return a;
-	});
-    }
-
-    /**
-     * Hängt an jede Artikelbezeichnung das Suffix "- Sonderangebot" an.
-     */
-    public void addSonderangebotSuffix() {
-	applyToArticles((Artikel a) -> {
-	    a.setBezeichnung(a.getBezeichnung() + " - Sonderangebot!");
-	    return a;
-	});
-    }
-
-    /**
-     * Reduziert jeden Artikel um 10% und hängt an jede Artikelbezeichnung das
-     * Suffix " - Sonderangebot" an.
-     */
-    public void reduzierenUndSuffix() {
-	applyToArticles((Artikel a) -> {
-	    reduziereAlleUm10Prozent();
-	    addSonderangebotSuffix();
-	    return a;
-	});
     }
 
     // ------------------- hilfs-Methoden --------------------------------
